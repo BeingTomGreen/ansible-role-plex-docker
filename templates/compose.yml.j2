@@ -1,0 +1,81 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "true"
+{{ ansible_managed | comment() }}
+
+services:
+  plex:
+    {% if plex_docker_cap_add | length > 0 %}
+    cap_add:
+      {% for capability in plex_docker_cap_add %}
+      - {{ capability }}
+      {% endfor %}
+    {% endif %}
+    {% if plex_docker_cap_drop | length > 0 %}
+    cap_drop:
+      {% for capability in plex_docker_cap_drop %}
+      - {{ capability }}
+      {% endfor %}
+    {% endif %}
+    container_name: {{ plex_docker_container_name }}
+    {% if plex_docker_depends_on | length > 0 %}
+    depends_on:
+      {% for dep in plex_docker_depends_on %}
+      - {{ dep }}
+      {% endfor %}
+    {% endif %}
+    {% if plex_docker_devices %}
+    devices:
+      {% for device in plex_docker_devices %}
+      - {{ device }}
+      {% endfor %}
+    {% endif %}
+    environment:
+      PUID: {{ plex_docker_env_puid }}
+      PGID: {{ plex_docker_env_pgid }}
+      TZ: {{ plex_docker_env_timezone }}
+      VERSION: {{ plex_docker_env_version }}
+      {% if plex_docker_env_plex_claim %}
+      PLEX_CLAIM: {{ plex_docker_env_plex_claim }}
+      {% endif %}
+      {% if plex_docker_extra_environment_vars | length > 0 %}
+      {% for env, value in plex_docker_extra_environment_vars.items() %}
+      {{ env }}: {{ value }}
+      {% endfor %}
+      {% endif %}
+    image: {{ plex_docker_image }}:{{ plex_docker_image_tag }}
+    {% if plex_docker_labels | length > 0 %}
+    labels:
+      {% for label, value in plex_docker_labels.items() %}
+      {{ label }}: "{{ value }}"
+      {% endfor %}
+    {% endif %}
+    {% if plex_docker_external_networks | length > 0 and not (plex_docker_network_mode | default('')) %}
+    networks:
+      {% for net in plex_docker_external_networks %}
+      - {{ net }}
+      {% endfor %}
+    {% elif plex_docker_network_mode %}
+    network_mode: {{ plex_docker_network_mode | default('host') }}
+    {% endif %}
+    {% if plex_docker_ports | length > 0 and not (plex_docker_network_mode | default('')) %}
+    ports:
+      {% for port in plex_docker_ports %}
+      - {{ port }}
+      {% endfor %}
+    {% endif %}
+    pull_policy: {{ plex_docker_pull_policy }}
+    restart: {{ plex_docker_restart_policy }}
+    volumes:
+      - {{ plex_docker_base_directory }}/config:/config
+      {% if plex_docker_media_volumes | length > 0 %}
+      {% for vol in plex_docker_media_volumes %}
+      - {{ vol }}
+      {% endfor %}
+      {% endif %}
+{% if plex_docker_external_networks | length > 0 and not (plex_docker_network_mode | default('')) %}
+
+networks:
+  {% for net in plex_docker_external_networks %}
+  {{ net }}:
+    external: true
+  {% endfor %}
+{% endif %}

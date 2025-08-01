@@ -1,0 +1,23 @@
+---
+
+galaxy_info:
+  author: Tom Green
+  description: A simple role for running Plex via Docker compose.
+
+  role_name: plex_docker
+  namespace: beingtomgreen
+  standalone: true
+
+  license: MIT
+
+  min_ansible_version: "2.12"
+
+  galaxy_tags:
+    - plex
+    - docker
+    - compose
+
+dependencies: []
+
+collections:
+  - community.docker

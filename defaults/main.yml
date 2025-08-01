@@ -1,0 +1,111 @@
+---
+
+# Specifies container capabilities to add/drop
+# See: https://man7.org/linux/man-pages/man7/capabilities.7.html
+plex_docker_cap_add: []
+plex_docker_cap_drop: []
+
+# Set container name
+plex_docker_container_name: 'plex'
+
+# Set services container depends on
+plex_docker_depends_on: []
+
+# Set container devices
+# See: https://docs.linuxserver.io/images/docker-plex/#hardware-acceleration
+plex_docker_devices: []
+# Example:
+# plex_docker_devices:
+# - /dev/dri:/dev/dri
+# - /dev/dvb:/dev/dvb
+
+# Set container PUID and PGID
+# See https://docs.linuxserver.io/general/understanding-puid-and-pgid/
+plex_docker_env_puid: 1000
+plex_docker_env_pgid: 1000
+
+# Set container timezone env
+plex_docker_env_timezone: 'Etc/UTC'
+
+# Set Plex version env
+# See https://docs.linuxserver.io/images/docker-plex/#application-setup
+# Can be: docker, latest, public, or <specific-version>
+plex_docker_env_version: 'docker'
+
+# Set Plex Claim env
+# Optionally you can obtain a claim token from https://plex.tv/claim and input here.
+# Keep in mind that the claim tokens expire within 4 minutes.
+plex_docker_env_plex_claim:
+
+# Set additional Plex envs
+# Additional container environment variables
+plex_docker_extra_environment_vars: []
+# Example:
+# plex_docker_extra_environment_vars:
+#   SOME_OTHER_VAR: 'A_VALUE'
+
+# Set container image options
+plex_docker_image: 'lscr.io/linuxserver/plex'
+plex_docker_image_tag: 'latest'
+
+# Set container labels
+plex_docker_labels: []
+# Example:
+# plex_docker_labels:
+#  traefik.enable: 'true'
+#  traefik.http.routers.traefik-https.entrypoints: 'https'
+
+# Set container network mode
+# Can be: none, host, service:<service-name> or container:<container-name>
+# Set to host by default, as per the docs https://docs.linuxserver.io/images/docker-plex/#optional-parameters
+# plex_docker_network_mode will need to be null if you want to specify ports etc
+plex_docker_network_mode: 'host'
+
+# Set container external networks
+plex_docker_external_networks: []
+# Example:
+# plex_docker_external_networks:
+#  - 'mediarr'
+
+# Set container ports
+plex_docker_ports: []
+# Example:
+# plex_docker_ports:
+#   - '32400:32400' # access to Plex Media Server - Required if not using network_mode: host
+#   - '1900:1900/udp' # access to the Plex DLNA Server
+#   - '5353:5353/udp' # older Bonjour/Avahi network discovery
+#   - '8324:8324' # controlling Plex for Roku via Plex Companion
+#   - '32410:32410/udp' # current GDM network discovery
+#   - '32412:32412/udp' # current GDM network discovery
+#   - '32413:32413/udp' # current GDM network discovery
+#   - '32414:32414/udp' # current GDM network discovery
+#   - '32469:32469' # access to the Plex DLNA Server
+
+# Set container pull policy
+# See: https://docs.docker.com/reference/compose-file/services/#pull_policy
+# Can be: always, never, missing, build, daily, weekly, every_<duration>
+plex_docker_pull_policy: 'missing'
+
+# Set container restart policy
+plex_docker_restart_policy: 'unless-stopped'
+
+# Set container runtime
+plex_docker_runtime: 'runc'
+
+# Set container media volumess
+plex_docker_media_volumes: []
+# Example:
+# plex_docker_media_volumes:
+# - '/path/to/tv:/tv'
+# - '/path/to/movies:/movies'
+# - '/path/to/music:/music'
+
+# User that will own the compose files
+plex_docker_user: "{{ ansible_user }}"
+
+# Base path for deployment
+plex_docker_base_directory: '/srv/plex_docker'
+
+# Control image pruning
+plex_docker_prune_images: false
+plex_docker_prune_until: '72h'
