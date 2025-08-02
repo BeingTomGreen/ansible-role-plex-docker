@@ -37,8 +37,8 @@ ansible-galaxy install -r requirements.yml
   become: true
   vars:
     plex_docker_devices:
-      - /dev/dri:/dev/dri
-      - /dev/dvb:/dev/dvb
+      - '/dev/dri:/dev/dri'
+      - '/dev/dvb:/dev/dvb'
 
     plex_docker_env_puid: 5000
     plex_docker_env_pgid: 5000
@@ -73,7 +73,7 @@ If you're rocking an Intel, ATI or AMD card, setup is nice and simple, as you'd 
 
 #### NVIDIA
 
-If you're stuck with an NVIDIA GPU, you will need the [container toolkit](https://github.com/NVIDIA/nvidia-container-toolkit) installed, and then set the `runtime` to `docker`:
+If you're stuck with an NVIDIA GPU, you will need the [container toolkit](https://github.com/NVIDIA/nvidia-container-toolkit) installed, and then set the `runtime` to `nvidia`:
 
 ```yaml
 ---
@@ -82,7 +82,7 @@ If you're stuck with an NVIDIA GPU, you will need the [container toolkit](https:
   become: true
   vars:
     # Use the Nvidia container toolkit's runtime
-    plex_docker_runtime: nvidia
+    plex_docker_runtime: 'nvidia'
 
     # Optionally, set a comma separated list of device UUIDs or index(es)
     plex_docker_extra_environment_vars:
@@ -111,7 +111,7 @@ If you're running a Raspberry Pi 4, be sure to enable `dtoverlay=vc4-fkms-v3d` i
 
 ### Networking
 
-LinuxServer.io reccomends running their Plex image in a container with `network_mode: host`, so that's the default. But hey, who wants to be a sheep, you do you.
+LinuxServer.io recommends running their Plex image in a container with `network_mode: host`, so that's the default. But hey, who wants to be a sheep, you do you.
 
 ```yaml
 ---
@@ -136,13 +136,13 @@ LinuxServer.io reccomends running their Plex image in a container with `network_
 
     # Alternatively, set a list of networks to attach this container to
     plex_docker_external_networks:
-      - proxy
-      - my-little-network
+      - 'proxy'
+      - 'my-little-network'
   roles:
     - role: beingtomgreen.plex_docker
 ```
 
-### Want kitchen sink?
+### Want the kitchen sink?
 
 Seriously, take a look at [`defaults/main.yml`](defaults/main.yml), it's obnoxiously commented, just for you.
 
@@ -153,10 +153,10 @@ Seriously, take a look at [`defaults/main.yml`](defaults/main.yml), it's obnoxio
   become: true
   vars:
     plex_docker_cap_add:
-      - CAP_WAKE_ALARM
-      - CAP_AUDIT_CONTROL
+      - 'CAP_WAKE_ALARM'
+      - 'CAP_AUDIT_CONTROL'
     plex_docker_cap_drop:
-      - CAP_CHECKPOINT_RESTORE
+      - 'CAP_CHECKPOINT_RESTORE'
 
     plex_docker_container_name: 'plex_container'
 
