@@ -2,7 +2,7 @@
 
 galaxy_info:
   author: Tom Green
-  description: A simple role for running Plex via Docker compose.
+  description: A simple ansible role for running Plex via Docker compose using the LinuxServer.io Plex image.
 
   role_name: plex_docker
   namespace: beingtomgreen
@@ -16,6 +16,7 @@ galaxy_info:
     - plex
     - docker
     - compose
+    - linuxserverio
 
 dependencies: []
 
