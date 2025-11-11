@@ -107,5 +107,5 @@ plex_docker_user: "{{ ansible_user }}"
 plex_docker_base_directory: '/srv/plex_docker'
 
 # Control image pruning
-plex_docker_prune_images: 'false'
+plex_docker_prune_images: False
 plex_docker_prune_until: '72h'
