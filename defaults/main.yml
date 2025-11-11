@@ -106,6 +106,5 @@ plex_docker_user: "{{ ansible_user }}"
 # Base path for deployment
 plex_docker_base_directory: '/srv/plex_docker'
 
-# Control image pruning
-plex_docker_prune_images: False
-plex_docker_prune_until: '72h'
+# Control Image updates
+plex_docker_update_image: False

@@ -22,14 +22,6 @@
   community.docker.docker_compose_v2:
     project_src: "{{ plex_docker_base_directory }}"
     state: 'present'
-    pull: "{{ plex_docker_pull_policy }}"
-    recreate: "{{ 'always' if plex_docker_compose_template_result.changed else 'auto' }}"
+    pull: "{{ 'always' if plex_docker_update_image else plex_docker_pull_policy }}"
+    recreate: "{{ 'always' if (plex_docker_compose_template_result.changed or plex_docker_update_image) else 'auto' }}"
     remove_orphans: true
-
-- name: Prune unused Docker images
-  community.docker.docker_prune:
-    images: true
-    images_filters:
-      dangling: false
-      until: "{{ plex_docker_prune_until | default('72h') }}"
-  when: plex_docker_prune_images | default(false)
