@@ -107,4 +107,4 @@ plex_docker_user: "{{ ansible_user }}"
 plex_docker_base_directory: '/srv/plex_docker'
 
 # Control Image updates
-plex_docker_update_image: False
+plex_docker_update_image: false

@@ -198,7 +198,7 @@ Seriously, take a look at [`defaults/main.yml`](defaults/main.yml), it's obnoxio
 
     plex_docker_base_directory: '/opt/plex_docker'
 
-    plex_docker_update_image: True
+    plex_docker_update_image: true
 
   roles:
     - role: beingtomgreen.plex_docker
