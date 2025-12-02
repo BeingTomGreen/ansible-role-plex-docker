@@ -1,80 +1,114 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 
-services:
-  plex:
-    {% if plex_docker_cap_add | length > 0 %}
-    cap_add:
-      {% for capability in plex_docker_cap_add %}
-      - {{ capability }}
-      {% endfor %}
-    {% endif %}
-    {% if plex_docker_cap_drop | length > 0 %}
-    cap_drop:
-      {% for capability in plex_docker_cap_drop %}
-      - {{ capability }}
-      {% endfor %}
-    {% endif %}
-    container_name: {{ plex_docker_container_name }}
-    {% if plex_docker_depends_on | length > 0 %}
-    depends_on:
-      {% for dep in plex_docker_depends_on %}
-      - {{ dep }}
-      {% endfor %}
-    {% endif %}
-    {% if plex_docker_devices %}
-    devices:
-      {% for device in plex_docker_devices %}
-      - {{ device }}
-      {% endfor %}
-    {% endif %}
-    environment:
-      PUID: {{ plex_docker_env_puid }}
-      PGID: {{ plex_docker_env_pgid }}
-      TZ: {{ plex_docker_env_timezone }}
-      VERSION: {{ plex_docker_env_version }}
-      {% if plex_docker_env_plex_claim %}
-      PLEX_CLAIM: {{ plex_docker_env_plex_claim }}
-      {% endif %}
-      {% if plex_docker_extra_environment_vars | length > 0 %}
-      {% for env, value in plex_docker_extra_environment_vars.items() %}
-      {{ env }}: {{ value }}
-      {% endfor %}
-      {% endif %}
-    image: {{ plex_docker_image }}:{{ plex_docker_image_tag }}
-    {% if plex_docker_labels | length > 0 %}
-    labels:
-      {% for label, value in plex_docker_labels.items() %}
-      {{ label }}: "{{ value }}"
-      {% endfor %}
-    {% endif %}
-    {% if plex_docker_external_networks | length > 0 and not (plex_docker_network_mode | default('')) %}
-    networks:
-      {% for net in plex_docker_external_networks %}
-      - {{ net }}
-      {% endfor %}
-    {% elif plex_docker_network_mode %}
-    network_mode: {{ plex_docker_network_mode | default('host') }}
-    {% endif %}
-    {% if plex_docker_ports | length > 0 and not (plex_docker_network_mode | default('')) %}
-    ports:
-      {% for port in plex_docker_ports %}
-      - {{ port }}
-      {% endfor %}
-    {% endif %}
-    pull_policy: {{ plex_docker_pull_policy }}
-    restart: {{ plex_docker_restart_policy }}
-    volumes:
-      - {{ plex_docker_base_directory }}/config:/config
-      {% if plex_docker_media_volumes | length > 0 %}
-      {% for vol in plex_docker_media_volumes %}
-      - {{ vol }}
-      {% endfor %}
-      {% endif %}
-{% if plex_docker_external_networks | length > 0 and not (plex_docker_network_mode | default('')) %}
+---
 
+services:
+  {{ plex_docker_service_name }}:
+{% if plex_docker_cpu_count %}
+    cpu_count: {{ plex_docker_cpu_count }}
+{% endif %}
+{% if plex_docker_cpu_percentage %}
+    cpu_percent: {{ plex_docker_cpu_percentage }}
+{% endif %}
+{% if plex_docker_cpu_shares %}
+    cpu_shares: {{ plex_docker_cpu_shares }}
+{% endif %}
+{% if plex_docker_cpu_period %}
+    cpu_period: {{ plex_docker_cpu_period }}
+{% endif %}
+{% if plex_docker_cpu_quota %}
+    cpu_quota: {{ plex_docker_cpu_quota }}
+{% endif %}
+{% if plex_docker_cpu_rt_runtime %}
+    cpu_rt_runtime: {{ plex_docker_cpu_rt_runtime }}
+{% endif %}
+{% if plex_docker_cpu_rt_period %}
+    cpu_rt_period: {{ plex_docker_cpu_rt_period }}
+{% endif %}
+{% if plex_docker_cpus %}
+    cpus: {{ plex_docker_cpus }}
+{% endif %}
+{% if plex_docker_cpuset %}
+    cpuset: {{ plex_docker_cpuset }}
+{% endif %}
+{% if plex_docker_cap_add %}
+    cap_add:
+{{ plex_docker_cap_add | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if plex_docker_cap_drop %}
+    cap_drop:
+{{ plex_docker_cap_drop | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if plex_docker_container_name %}
+    container_name: {{ plex_docker_container_name }}
+{% endif %}
+{% if plex_docker_devices %}
+    devices:
+{{ plex_docker_devices | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if plex_docker_dns %}
+    dns: {{ plex_docker_dns if plex_docker_dns is string else plex_docker_dns | to_yaml }}
+{% endif %}
+{% if plex_docker_dns_opt %}
+    dns_opt: {{ plex_docker_dns_opt if plex_docker_dns_opt is string else plex_docker_dns_opt | to_yaml }}
+{% endif %}
+{% if plex_docker_dns_search %}
+    dns_search: {{ plex_docker_dns_search if plex_docker_dns_search is string else plex_docker_dns_search | to_yaml }}
+{% endif %}
+{% if plex_docker_domainname %}
+    domainname: {{ plex_docker_domainname }}
+{% endif %}
+    environment:
+{{ plex_docker_environment | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% if plex_docker_hostname %}
+    hostname: {{ plex_docker_hostname }}
+{% endif %}
+    image: {{ plex_docker_image }}
+{% if plex_docker_labels %}
+    labels:
+{{ plex_docker_labels | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if plex_docker_mem_limit %}
+    mem_limit: {{ plex_docker_mem_limit }}
+{% endif %}
+{% if plex_docker_mem_reservation %}
+    mem_reservation: {{ plex_docker_mem_reservation }}
+{% endif %}
+{% if plex_docker_mem_swappiness %}
+    mem_swappiness: {{ plex_docker_mem_swappiness }}
+{% endif %}
+{% if plex_docker_memswap_limit %}
+    memswap_limit: {{ plex_docker_memswap_limit }}
+{% endif %}
+{% if plex_docker_network_mode %}
+    network_mode: {{ plex_docker_network_mode }}
+{% endif %}
+{% if plex_docker_networks %}
+    networks:
+{{ plex_docker_networks | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if plex_docker_ports %}
+    ports:
+{{ plex_docker_ports | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+{% if plex_docker_pull_policy %}
+    pull_policy: {{ plex_docker_pull_policy }}
+{% endif %}
+{% if plex_docker_restart_policy %}
+    restart: {{ plex_docker_restart_policy }}
+{% endif %}
+{% if plex_docker_runtime %}
+    runtime: {{ plex_docker_runtime }}
+{% endif %}
+{% if plex_docker_volumes %}
+    volumes:
+{{ plex_docker_volumes | to_nice_yaml(indent=2) | indent(6, first=True) }}
+{% endif %}
+
+{% if plex_docker_networks %}
 networks:
-  {% for net in plex_docker_external_networks %}
-  {{ net }}:
+{% for network in plex_docker_networks %}
+  {{ network }}:
     external: true
-  {% endfor %}
+{% endfor %}
 {% endif %}

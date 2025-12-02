@@ -7,6 +7,9 @@
     owner: "{{ plex_docker_user }}"
     group: "{{ plex_docker_user }}"
     mode: '0755'
+  tags:
+    - plex
+    - plex_setup
 
 - name: Ensure Plex compose file is present
   ansible.builtin.template:
@@ -17,11 +20,16 @@
     mode: '0644'
     backup: true
   register: plex_docker_compose_template_result
+  tags:
+    - plex
+    - plex_config
 
 - name: Ensure Plex compose project is deployed
   community.docker.docker_compose_v2:
     project_src: "{{ plex_docker_base_directory }}"
     state: 'present'
-    pull: "{{ 'always' if plex_docker_update_image else plex_docker_pull_policy }}"
-    recreate: "{{ 'always' if (plex_docker_compose_template_result.changed or plex_docker_update_image) else 'auto' }}"
+    recreate: "{{ 'always' if (plex_docker_compose_template_result.changed) else 'auto' }}"
     remove_orphans: true
+  tags:
+    - plex
+    - plex_deploy
