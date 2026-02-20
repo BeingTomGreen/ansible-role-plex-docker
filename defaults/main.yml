@@ -108,7 +108,7 @@ plex_docker_networks: []
 # plex_docker_networks:
 #  - 'mediarr'
 
-# The ports is used to define the port mappings between the host machine and the containers
+# Define the port mappings between the host machine and the containers
 plex_docker_ports:
   - '32400:32400' # access to Plex Media Server - Required if not using network_mode: host
 #   - '1900:1900/udp' # access to the Plex DLNA Server
@@ -119,7 +119,6 @@ plex_docker_ports:
 #   - '32413:32413/udp' # current GDM network discovery
 #   - '32414:32414/udp' # current GDM network discovery
 #   - '32469:32469' # access to the Plex DLNA Server
-
 
 # Defines the decisions Compose makes when it starts to pull images. Possible values are
 # always, never, missing, build, daily, weekly, every_<duration>
